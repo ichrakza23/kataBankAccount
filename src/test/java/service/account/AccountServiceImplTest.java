@@ -2,6 +2,7 @@ package service.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import exception.InvalidAmountException;
 import model.Account;
-import service.printer.MockPrinter;
+import service.printer.ConsolePrinter;
 
 class AccountServiceImplTest {
 
@@ -21,7 +22,7 @@ class AccountServiceImplTest {
 	private AccountServiceImpl accountService;
 
 	@Mock
-	private MockPrinter printer;
+	private ConsolePrinter printer;
 
 	@BeforeEach
 	void setup() {
@@ -49,8 +50,8 @@ class AccountServiceImplTest {
 	@Test
 	void withdrawShouldDecreaseBalance() throws InvalidAmountException {
 		accountService.deposit(account, 100.0);
-		accountService.withdraw(account, 50.0);
-		assertEquals(50.0, account.getBalance());
+		accountService.withdraw(account, 20.0);
+		assertEquals(80.0, account.getBalance());
 	}
 
 	@Test
@@ -71,4 +72,13 @@ class AccountServiceImplTest {
 		assertThrows(InvalidAmountException.class, () -> accountService.withdraw(account, 150.0));
 	}
 
+	@Test
+	void printStatementShouldCallPrinterMethods() throws InvalidAmountException {
+		accountService.deposit(account, 100.0);
+		accountService.withdraw(account, 20.0);
+		accountService.printStatement(account);
+		verify(printer).printHeader();
+		verify(printer).printTransaction(account.getTransactions().get(0));
+		verify(printer).printTransaction(account.getTransactions().get(1));
+	}
 }

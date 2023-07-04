@@ -9,14 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import enums.OperationType;
 import exception.InvalidAmountException;
 import model.Account;
 import model.Transaction;
 import service.printer.Printer;
 
+/**
+ * 
+ * @author izarati
+ *
+ */
 @Service
 public class AccountServiceImpl implements AccountService {
-	
+
 	@Autowired
 	@Qualifier("ConsolePrinter")
 	private Printer printer;
@@ -26,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
 		validateAmount(amount);
 		account.setBalance(account.getBalance() + amount);
 		List<Transaction> transactions = account.getTransactions();
-		transactions.add(new Transaction(LocalDate.now(), amount, account.getBalance()));
+		transactions.add(new Transaction(LocalDate.now(), amount, account.getBalance(), OperationType.DEPOSIT));
 		account.setTransactions(transactions);
 
 	}
@@ -39,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
 		}
 		account.setBalance(account.getBalance() - amount);
 		List<Transaction> transactions = account.getTransactions();
-		transactions.add(new Transaction(LocalDate.now(), -amount, account.getBalance()));
+		transactions.add(new Transaction(LocalDate.now(), -amount, account.getBalance(), OperationType.WITHDRAWAL));
 		account.setTransactions(transactions);
 
 	}
@@ -49,11 +55,12 @@ public class AccountServiceImpl implements AccountService {
 		printer.printHeader();
 		List<Transaction> transactions = account.getTransactions();
 		Collections.sort(transactions, new Comparator<Transaction>() {
-		    @Override
-		    public int compare(Transaction t1, Transaction t2) {
-		    	return t1.getDate().compareTo(t2.getDate());
-	    }});
-		transactions.forEach(transaction ->printer.printTransaction(transaction));
+			@Override
+			public int compare(Transaction t1, Transaction t2) {
+				return t1.getDate().compareTo(t2.getDate());
+			}
+		});
+		transactions.forEach(transaction -> printer.printTransaction(transaction));
 	}
 
 	private void validateAmount(double amount) throws InvalidAmountException {

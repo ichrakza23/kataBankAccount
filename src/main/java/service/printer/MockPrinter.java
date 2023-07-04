@@ -21,13 +21,13 @@ public class MockPrinter implements Printer {
 	@Override
 	public void printHeader() {
 		output.append("Statement:\n");
-		output.append("Date\t\tAmount\tBalance\n");
+		output.append("Operation\t\tDate\t\tAmount\tBalance\n");
 	}
 
 	@Override
 	public void printTransaction(Transaction transaction) {
-		output.append(transaction.getDate()).append("\t").append(transaction.getAmount()).append("\t")
-				.append(transaction.getBalance()).append("\n");
+		output.append(transaction.getOperationType().toString()).append("\t").append(transaction.getDate()).append("\t")
+				.append(transaction.getAmount()).append("\t").append(transaction.getBalance()).append("\n");
 	}
 
 	public String getOutput() {

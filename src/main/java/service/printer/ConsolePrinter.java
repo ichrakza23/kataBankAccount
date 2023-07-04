@@ -17,15 +17,15 @@ public class ConsolePrinter implements Printer {
 	@Override
 	public void printHeader() {
 		ConsolePrinter.log.info("Statement:");
-		ConsolePrinter.log.info("Date\t\tAmount\tBalance");
+		ConsolePrinter.log.info("Operation\tDate\t\tAmount\tBalance");
 
 	}
 
 	@Override
 	public void printTransaction(Transaction transaction) {
-		
-		ConsolePrinter.log
-				.info(transaction.getDate() + "\t" + transaction.getAmount() + "\t" + transaction.getBalance());
+
+		ConsolePrinter.log.info(transaction.getOperationType().toString() + "\t" + transaction.getDate() + "\t"
+				+ transaction.getAmount() + "\t" + transaction.getBalance());
 
 	}
 
