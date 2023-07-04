@@ -1,5 +1,7 @@
 package service.printer;
 
+import org.springframework.stereotype.Service;
+
 import lombok.extern.slf4j.Slf4j;
 import model.Transaction;
 
@@ -9,6 +11,7 @@ import model.Transaction;
  *
  */
 @Slf4j
+@Service
 public class ConsolePrinter implements Printer {
 
 	@Override

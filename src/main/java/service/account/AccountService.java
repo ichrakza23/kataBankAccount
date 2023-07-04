@@ -1,5 +1,6 @@
 package service.account;
 
+import exception.InvalidAmountException;
 import model.Account;
 import service.printer.Printer;
 
@@ -9,11 +10,26 @@ import service.printer.Printer;
  *
  */
 public interface AccountService {
+	/**
+	 * deposit an amount to actual account
+	 * @param account
+	 * @param amount
+	 * @throws InvalidAmountException
+	 */
+	public void deposit(Account account, double amount) throws InvalidAmountException;
 
-	public void deposit(Account account, double amount);
+	/**
+	 * withdraw an amount from actual account
+	 * @param account
+	 * @param amount
+	 * @throws InvalidAmountException
+	 */
+	public void withdraw(Account account, double amount) throws InvalidAmountException;
 
-	public void withdraw(Account account, double amount);
-
-	public void printStatement(Account account, Printer printer);
+	/**
+	 * 
+	 * @param account
+	 */
+	public void printStatement(Account account);
 
 }

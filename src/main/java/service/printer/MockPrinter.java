@@ -1,5 +1,7 @@
 package service.printer;
 
+import org.springframework.stereotype.Service;
+
 import model.Transaction;
 
 /**
@@ -7,6 +9,7 @@ import model.Transaction;
  * @author izarati
  *
  */
+@Service
 public class MockPrinter implements Printer {
 
 	private StringBuilder output;

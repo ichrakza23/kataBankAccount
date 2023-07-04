@@ -6,9 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import exception.InvalidAmountException;
 import model.Account;
+import service.printer.MockPrinter;
 
 class AccountServiceImplTest {
 
@@ -16,6 +19,9 @@ class AccountServiceImplTest {
 
 	@InjectMocks
 	private AccountServiceImpl accountService;
+
+	@Mock
+	private MockPrinter printer;
 
 	@BeforeEach
 	void setup() {
@@ -25,44 +31,44 @@ class AccountServiceImplTest {
 	}
 
 	@Test
-	void depositShouldIncreaseBalance() {
+	void depositShouldIncreaseBalance() throws InvalidAmountException {
 		accountService.deposit(account, 100.0);
 		assertEquals(100.0, account.getBalance());
 	}
 
 	@Test
 	void depositWithNegativeAmountShouldThrowException() {
-		assertThrows(IllegalArgumentException.class, () -> accountService.deposit(account, -50.0));
+		assertThrows(InvalidAmountException.class, () -> accountService.deposit(account, -50.0));
 	}
 
 	@Test
 	void depositWithZeroAmountShouldThrowException() {
-		assertThrows(IllegalArgumentException.class, () -> accountService.deposit(account, 0.0));
+		assertThrows(InvalidAmountException.class, () -> accountService.deposit(account, 0.0));
 	}
 
 	@Test
-	void withdrawShouldDecreaseBalance() {
+	void withdrawShouldDecreaseBalance() throws InvalidAmountException {
 		accountService.deposit(account, 100.0);
 		accountService.withdraw(account, 50.0);
 		assertEquals(50.0, account.getBalance());
 	}
 
 	@Test
-	void withdrawWithNegativeAmountShouldThrowException() {
+	void withdrawWithNegativeAmountShouldThrowException() throws InvalidAmountException {
 		accountService.deposit(account, 100.0);
-		assertThrows(IllegalArgumentException.class, () -> accountService.withdraw(account, -50.0));
+		assertThrows(InvalidAmountException.class, () -> accountService.withdraw(account, -50.0));
 	}
 
 	@Test
-	void withdrawWithZeroAmountShouldThrowException() {
+	void withdrawWithZeroAmountShouldThrowException() throws InvalidAmountException {
 		accountService.deposit(account, 100.0);
-		assertThrows(IllegalArgumentException.class, () -> accountService.withdraw(account, 0.0));
+		assertThrows(InvalidAmountException.class, () -> accountService.withdraw(account, 0.0));
 	}
 
 	@Test
-	void withdrawWithInsufficientFundsShouldThrowException() {
+	void withdrawWithInsufficientFundsShouldThrowException() throws InvalidAmountException {
 		accountService.deposit(account, 100.0);
-		assertThrows(IllegalArgumentException.class, () -> accountService.withdraw(account, 150.0));
+		assertThrows(InvalidAmountException.class, () -> accountService.withdraw(account, 150.0));
 	}
 
 }
